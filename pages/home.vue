@@ -1,28 +1,93 @@
 <template>
     <div class="md:flex flex-col md:flex-row md:min-h-screen w-full">
-  <div @click="open = false" class="flex flex-col w-full md:w-64 text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800 flex-shrink-0" x-data="{ open: false }">
-    <div class="flex-shrink-0 px-8 py-4 flex flex-row items-center justify-between bg-gray-600">
-      <a href="#" class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline">PortNet</a>
-      <button class="rounded-lg md:hidden rounded-lg focus:outline-none focus:shadow-outline" @click="open = !open">
-        <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
-          <path x-show="!open" fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-          <path x-show="open" fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-        </svg>
-      </button>
+    <SideBar class=""/>
+    <div class="w-full bg-gray-200 ml-64">
+      <div class="px-20">
+        <h1 class="text-5xl">
+          Good 
+          <span>Morning</span>
+          <span>Shaun</span>
+        </h1>
+        <div class="grid grid-cols-3 gap-24 text-left mt-8">
+          <div class="bg-gray-400 py-3 px-3 shadow-lg rounded-md">
+            <span class="text-3xl">
+              {{berthing}}
+            </span>
+            <div class="text-xs  font-bold">
+               <span class="text-3xl">Berthing</span>
+            </div>
+            
+          </div>
+          <div class="bg-gray-400 py-3 px-3 shadow-lg rounded-md">
+            <!-- <h3 class="text-xl">
+              Alongside
+            </h3> -->
+            <span class="text-3xl font-bold">
+              {{alongSide}}
+            </span>
+            <div class="text-xs">
+             <span class="text-3xl">Alongside</span>
+            </div>
+          </div>
+          <div class="bg-gray-400 py-3 px-3 shadow-lg rounded-md">
+            <!-- <h3 class="text-xl">
+              Unberthed
+            </h3> -->
+            <span class="text-3xl font-bold">
+              {{unBerthed}}
+            </span>
+            <div class="text-xs">
+               <span class="text-3xl">Unberthed</span>
+            </div>
+          </div>
+        </div>
+        
+      </div>
     </div>
-    <nav :class="{'block': open, 'hidden': !open}" class="flex-grow md:block px-4 pb-4 md:pb-0 md:overflow-y-auto bg-gray-600 ">
-      <a class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-gray-200 rounded-lg dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Overview</a>
-      <nuxt-link class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-100 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" to="vessels">Vessels</nuxt-link>
-      <nuxt-link class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-100 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" to="vessels">Alerts</nuxt-link>
-      <a class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-100 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Contacts</a>
-      <br>
-      <hr>
-        <a class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-100 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Settings</a>
-        <a class="bg-gray-200 text-gray-900 absolute bottom-0 mb-12 ml-12 block px-8 py-2 mt-50 text-sm font-semibold text-gray-100 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Logout</a>
-    </nav>
-  </div>
-  <div>
-      <h1>Hello</h1>
-  </div>
 </div>
 </template>
+
+<script>
+export default {
+    data() {
+      return {
+        vesselList: [],
+        berthing: 0,
+        alongSide: 0,
+        unBerthed: 0
+      }
+    },
+    mounted(){
+      // console.log(this.vesselList);
+      // for(let i = 0; i<this.vesselList.length; i++){
+      //   if(this.vesselList.status == "BERTHING"){
+      //     this.berthing++;
+      //   }
+      //   if(this.vesselList.status == "ALONGSIDE"){
+      //     this.alongSide++;
+      //   }
+      //   if(this.vesselList.status == "UNBERTHED"){
+      //     this.unBerthed++;
+      //   }
+      // }
+    },
+    async fetch() {
+      this.$http.setHeader("Accept", "application/json")
+      this.$http.setHeader('Content-Type', 'application/json')
+      this.vesselList = await this.$http.$get('http://localhost:8080/vessel/getall')
+      console.log(this.vesselList.length);
+      for(let i = 0; i<this.vesselList.length; i++){
+        // console.log(this.vesselList[i]);
+        if(this.vesselList[i].status == "BERTHING"){
+          this.berthing++;
+        }
+        if(this.vesselList[i].status == "ALONGSIDE"){
+          this.alongSide++;
+        }
+        if(this.vesselList[i].status == "UNBERTHED"){
+          this.unBerthed++;
+        }
+      }
+    }
+}
+</script>
