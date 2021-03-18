@@ -1,80 +1,125 @@
 <template>
     <div class="md:flex flex-col md:flex-row md:min-h-screen w-full">
     <SideBar class=""/>
-    <div class="w-full bg-gray-200 ml-64">
+    <div class="w-full bg-gray-200 ml-56">
       <div class="px-20">
         <h1 class="text-5xl">
           Good 
           <span>Morning</span>
           <span>Shaun</span>
         </h1>
-        <div class="grid grid-cols-3 gap-24 text-left mt-8">
-          <div class="bg-gray-400 py-3 px-3 shadow-lg rounded-md">
-            <span class="text-3xl">
-              {{berthing}}
-            </span>
-            <div class="text-xs  font-bold">
-               <span class="text-3xl">Berthing</span>
-            </div>
-            
+        <div class="flex">
+          <div class="w-8/12 h-90 bg-blue-500 mr-5">
+
           </div>
-          <div class="bg-gray-400 py-3 px-3 shadow-lg rounded-md">
-            <!-- <h3 class="text-xl">
-              Alongside
-            </h3> -->
-            <span class="text-3xl font-bold">
-              {{alongSide}}
-            </span>
-            <div class="text-xs">
-             <span class="text-3xl">Alongside</span>
+          <div class="w-4/12 h-90 bg-red-500"></div>
+        </div>
+        <div>
+          <div class="flex justify-between mt-12 items-center">
+            <div class="text-xl font-bold">
+              Incoming Vessels
             </div>
-          </div>
-          <div class="bg-gray-400 py-3 px-3 shadow-lg rounded-md">
-            <!-- <h3 class="text-xl">
-              Unberthed
-            </h3> -->
-            <span class="text-3xl font-bold">
-              {{unBerthed}}
-            </span>
-            <div class="text-xs">
-               <span class="text-3xl">Unberthed</span>
+            <div class="dropdown inline-block relative">
+              <button class="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center">
+                <span class="mr-1">Status: {{status.charAt(0) + status.toLowerCase().substring(1)}}</span>
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
+              </button>
+              <ul class="dropdown-menu absolute hidden text-gray-700 pt-1 right-0">
+                <li class="cursor-pointer"><a class="rounded-t bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" @click="filterStatus('All')">All</a></li>
+                <li class="cursor-pointer"><a class="rounded-t bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" @click="filterStatus('BERTHING')">Berthing</a></li>
+                <li class="cursor-pointer"><a class="bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" @click="filterStatus('ALONGSIDE')">Alongside</a></li>
+                <li class="cursor-pointer"><a class="rounded-b bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" @click="filterStatus('UNBERTHED')">Unberthed</a></li>
+              </ul>
             </div>
           </div>
         </div>
-        
+
+        <div class="grid grid-cols-5 text-sm items-center mt-8 border-b-2 py-4 text-gray-600">
+          <div>
+            Vessel Name
+          </div>
+          <div class="">
+            Status
+          </div>
+          <div>
+            Voyage Number 
+          </div>
+          <div>
+            Berth Time
+          </div>
+          <div>
+            Berth Number
+          </div>
+        </div>
+        <div
+        v-for="vessel in filteredVesselList"
+        >
+          <vessel-item
+          :vessel_name="vessel.vesselName"
+          :voyage_number="vessel.inVoyN"
+          :berth_time="vessel.berthTime"
+          :berth_number="vessel.berthNo"
+          :status="vessel.status"
+          >
+          </vessel-item>
+        </div>
       </div>
     </div>
 </div>
 </template>
-
+<style scoped>
+  .h-90{
+    height: 22rem;
+  }
+  .dropdown:hover .dropdown-menu {
+  display: block;
+}
+</style>
 <script>
+import VesselItem from '../components/VesselItem.vue'
+import moment from 'moment'
 export default {
+  components: { VesselItem },
     data() {
       return {
         vesselList: [],
+        filteredVesselList: [],
         berthing: 0,
         alongSide: 0,
-        unBerthed: 0
+        unBerthed: 0,
+        status: "All"
       }
     },
+    methods:{
+      filterStatus(newStatus){
+        this.status = newStatus
+        if(this.status == "All"){
+          this.filteredVesselList = this.vesselList
+          return
+        }
+        this.filteredVesselList = []
+        for(let i = 0; i<this.vesselList.length; i++){
+          if(this.vesselList[i].status == newStatus){
+            this.filteredVesselList.push(this.vesselList[i])
+          }
+        }
+      }
+    },
+    computed(){
+
+    },
     mounted(){
-      // console.log(this.vesselList);
-      // for(let i = 0; i<this.vesselList.length; i++){
-      //   if(this.vesselList.status == "BERTHING"){
-      //     this.berthing++;
-      //   }
-      //   if(this.vesselList.status == "ALONGSIDE"){
-      //     this.alongSide++;
-      //   }
-      //   if(this.vesselList.status == "UNBERTHED"){
-      //     this.unBerthed++;
-      //   }
-      // }
     },
     async fetch() {
       this.$http.setHeader("Accept", "application/json")
       this.$http.setHeader('Content-Type', 'application/json')
-      this.vesselList = await this.$http.$get('http://localhost:8080/vessel/getall')
+      this.vesselList = await this.$http.$post('http://localhost:8080/vessel/getvesselsbydate', 
+        {
+          "date": moment().format().substring(0,19)
+        } 
+      )
+      this.filteredVesselList = this.vesselList
+      console.log(moment().format());
       console.log(this.vesselList.length);
       for(let i = 0; i<this.vesselList.length; i++){
         // console.log(this.vesselList[i]);

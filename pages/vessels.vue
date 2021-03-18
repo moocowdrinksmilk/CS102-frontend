@@ -1,7 +1,7 @@
 <template>
     <div class="md:flex flex-col md:flex-row md:min-h-screen w-full bg-gray-200">
       <SideBar/>
-      <div class="w-full bg-gray-200 ml-64 bg-white p-5">
+      <div class="w-full bg-gray-200 ml-56 bg-white p-5">
       <div class="h-20 grid grid-cols-6 grid-flow-col items-center">
           <div class="col-span-2">
               <h1 class="text-xl font-medium">
