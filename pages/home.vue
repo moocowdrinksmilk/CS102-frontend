@@ -1,18 +1,19 @@
 <template>
     <div class="md:flex flex-col md:flex-row md:min-h-screen w-full">
     <SideBar class=""/>
-    <div class="w-full bg-gray-200 ml-56">
+    <div class="w-full bg-gray-200 ml-56 ">
       <div class="px-20">
-        <h1 class="text-5xl">
-          Good 
-          <span>Morning</span>
-          <span>Shaun</span>
+        <h1 class="text-5xl my-8">
+          Dashboard
         </h1>
         <div class="flex">
-          <div class="w-8/12 h-90 bg-blue-500 mr-5">
-
+          <div class="flex w-full h-56 overflow-x-auto max-w-screen-md"
+>
+            <subscribed-item
+            :vessel_name= "item.fullVslM"
+            :berth_date= "item.bthgDt"
+            ></subscribed-item>
           </div>
-          <div class="w-4/12 h-90 bg-red-500"></div>
         </div>
         <div>
           <div class="flex justify-between mt-12 items-center">
@@ -52,7 +53,7 @@
           </div>
         </div>
         <div
-        v-for="vessel in filteredVesselList"
+        v-for="(vessel, index) in filteredVesselList" :key="index"
         >
           <vessel-item
           :vessel_name="vessel.vesselName"
@@ -84,6 +85,7 @@ export default {
       return {
         vesselList: [],
         filteredVesselList: [],
+        subscribedVessel: [],
         berthing: 0,
         alongSide: 0,
         unBerthed: 0,
@@ -133,6 +135,12 @@ export default {
           this.unBerthed++;
         }
       }
+
+      this.subscribedVessel = await this.$http.$post('http://localhost:8080/user/get-subscribed', {
+        "username" : "Rui Xian",
+        "sort_by" : "name",
+        "order" : "asc"
+      })
     }
 }
 </script>
