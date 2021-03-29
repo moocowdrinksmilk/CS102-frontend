@@ -6,15 +6,22 @@
         <h1 class="text-5xl my-8">
           Dashboard
         </h1>
+        <h1 class="text-3xl my-8">
+            Your Watchlist
+          </h1>
         <div class="flex">
-          <div class="flex w-full h-56 overflow-x-auto max-w-screen-md"
->
+          <div class="flex w-full h-56 overflow-x-auto max-w-screen-md min-w-screen-md">
             <subscribed-item
-            :vessel_name= "item.fullVslM"
-            :berth_date= "item.bthgDt"
-            ></subscribed-item>
+            v-for="(item, index) in subscribedVessel" :key="index"
+            :vessel_name='item.fullVslM'
+            :berth_date='item.bthgDt'
+            >
+            </subscribed-item>
           </div>
-        </div>
+          <div class="max-w-md min-w-md whitespace-normal px-4 shadow-md ml-2 rounded-2xl bg-gray-100">
+            
+          </div>
+          </div>
         <div>
           <div class="flex justify-between mt-12 items-center">
             <div class="text-xl font-bold">
@@ -56,7 +63,7 @@
         v-for="(vessel, index) in filteredVesselList" :key="index"
         >
           <vessel-item
-          :vessel_name="vessel.vesselName"
+          :vessel_name="vessel.abbrVslm"
           :voyage_number="vessel.inVoyN"
           :berth_time="vessel.berthTime"
           :berth_number="vessel.berthNo"
@@ -106,9 +113,6 @@ export default {
           }
         }
       }
-    },
-    computed(){
-
     },
     mounted(){
     },

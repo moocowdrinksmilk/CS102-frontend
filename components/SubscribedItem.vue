@@ -1,9 +1,10 @@
 <template>
     <div>
-        <div class="w-52 bg-red-300 h-56 mx-6 rounded-3xl px-4 py-4">
-            <div>
-                {{vessel_name}}
+        <div class="w-48 bg-red-300 h-56 mx-6 rounded-3xl px-4 py-4">
+            <div class="text-sm">
+                Vessel Name: <br> {{vessel_name}}
             </div>
+            <br>
             <div>
                 {{berth_date}}
             </div>

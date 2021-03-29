@@ -49,7 +49,7 @@ export default {
     status: String,
   },
   mounted() {
-    // this.berth_time = this.berth_time.split("T")[1]
+    
   },
 };
 </script>

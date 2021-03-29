@@ -5,7 +5,7 @@
       <div class="h-20 grid grid-cols-6 grid-flow-col items-center">
           <div class="col-span-2">
               <h1 class="text-xl font-medium">
-              Subscribed Vessels
+              Vessel view
                 </h1>
           </div>
           <div class="col-start-4 col-span-1">
@@ -18,111 +18,52 @@
           </div>
       </div>
         
-      <div class="block h-10 grid grid-cols-5 grid-flow-col gap-4 border-b-2 border-gray-500">
+      <div class="block h-10 grid grid-cols-9 grid-flow-col gap-2 border-b-2 border-gray-500 text-base">
           <div>Vessel Name</div>
-          <div></div>
-          <div>Full Voyage Name</div>
+          <div>Voyage Name</div>
+          <div>Speed</div>
+          <div>Distance to go</div>
+          <div>Berthing Time</div>
+          <div>Departure Time</div>
           <div>Berth Number</div>
           <div>Status</div>
       </div>
-      <div class="overflow-auto h-64">
-      <div v-for="item in this.vessels">
-          <vessel-item
-        :vessel_name="item.vessel_name"
-        :full_voyage_name="item.full_voyage_name"
-        :berth_number="item.berth_number"
-        :status="item.status"
-        >
-        </vessel-item>
-      </div>
-      </div> 
+      <vessel-details-item
+      class="my-2"
+      v-for="(vessel, index) in vesselList" :key="index"
+            :vessel_name="vessel.abbrVslm"
+          :voyage_number="vessel.inVoyN"
+          :berth_time="vessel.berthTime"
+          :berth_number="vessel.berthNo"
+          :status="vessel.status"
+      ></vessel-details-item>
         
       </div>
     </div>
 </template>
 
 <script>
+import VesselDetailsItem from '../components/VesselDetailsItem.vue'
 import VesselItem from '../components/VesselItem.vue'
+import moment from 'moment'
 export default {
-  components: { VesselItem },
+  components: { VesselItem }, 
     data() {
-        return {
-            vessels :[
-                {
-                    vessel_name : "BTS",
-                    full_voyage_name: "Bangtan",
-                    berth_number: "1FW6",
-                    status:"Alongside"
-                },
-                {
-                    vessel_name : "BTS",
-                    full_voyage_name: "Bangtan",
-                    berth_number: "1FW6",
-                    status:"Alongside"
-                },
-                {
-                    vessel_name : "BTS",
-                    full_voyage_name: "Bangtan",
-                    berth_number: "1FW6",
-                    status:"Alongside"
-                },
-                {
-                    vessel_name : "BTS",
-                    full_voyage_name: "Bangtan",
-                    berth_number: "1FW6",
-                    status:"Alongside"
-                },
-                {
-                    vessel_name : "BTS",
-                    full_voyage_name: "Bangtan",
-                    berth_number: "1FW6",
-                    status:"Alongside"
-                },
-                {
-                    vessel_name : "BTS",
-                    full_voyage_name: "Bangtan",
-                    berth_number: "1FW6",
-                    status:"Alongside"
-                },
-                {
-                    vessel_name : "BTS",
-                    full_voyage_name: "Bangtan",
-                    berth_number: "1FW6",
-                    status:"Alongside"
-                },
-                {
-                    vessel_name : "BTS",
-                    full_voyage_name: "Bangtan",
-                    berth_number: "1FW6",
-                    status:"Alongside"
-                },
-                {
-                    vessel_name : "BTS",
-                    full_voyage_name: "Bangtan",
-                    berth_number: "1FW6",
-                    status:"Alongside"
-                },
-                {
-                    vessel_name : "BTS",
-                    full_voyage_name: "Bangtan",
-                    berth_number: "1FW6",
-                    status:"Alongside"
-                },
-                {
-                    vessel_name : "BTS",
-                    full_voyage_name: "Bangtan",
-                    berth_number: "1FW6",
-                    status:"Alongside"
-                },
-                {
-                    vessel_name : "BTS",
-                    full_voyage_name: "Bangtan",
-                    berth_number: "1FW6",
-                    status:"Alongside"
-                },
-
-            ]
-        }
+      return {
+        vesselList: [],
+        filteredVesselList: [],
+      }
+    },
+    async fetch(){
+        this.$http.setHeader("Accept", "application/json")
+      this.$http.setHeader('Content-Type', 'application/json')
+      this.vesselList = await this.$http.$post('http://localhost:8080/vessel/getvesselsbydate', 
+        {
+          "date": moment().format().substring(0,19)
+        } 
+        
+      )
+      console.log(vesselList);
     }
 }
 </script>
