@@ -1,6 +1,7 @@
 <template>
   <body class>
         <div class="lg:flex">
+            <SignUpModal v-if="clickedSignUp" @closeModal="close"/>
             <div class="lg:w-1/2 xl:max-w-screen-sm">
                 <div class="py-12 bg-indigo-100 lg:bg-white flex justify-center lg:justify-start lg:px-12">
                     <div class="cursor-pointer flex items-center">
@@ -25,8 +26,8 @@
                     <div class="mt-12">
                         <form>
                             <div>
-                                <div class="text-sm font-bold text-gray-700 tracking-wide">Email Address</div>
-                                <input class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" type="" placeholder="mike@gmail.com">
+                                <div class="text-sm font-bold text-gray-700 tracking-wide">Username</div>
+                                <input v-model="user_name" class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" type="" placeholder="Username">
                             </div>
                             <div class="mt-8">
                                 <div class="flex justify-between items-center">
@@ -40,21 +41,18 @@
                                         </a>
                                     </div>
                                 </div>
-                                <input class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" type="" placeholder="Enter your password">
+                                <input v-model="password" class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" type="password" placeholder="Enter your password">
                             </div>
                             <div class="mt-10">
-                              <nuxt-link to="/home">
-                                <button class="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide
+                                <button @click="login" class="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide
                                 font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
-                                shadow-lg" @click="login" type="button">
-                                    Log In
+                                shadow-lg" type="submit">
+                                    <nuxt-link to="/home">Login</nuxt-link>
                                 </button>
-                                <!-- {{$auth.loggedIn}} -->
-                              </nuxt-link>
                             </div>
                         </form>
                         <div class="mt-12 text-sm font-display font-semibold text-gray-700 text-center">
-                            Don't have an account ? <a class="cursor-pointer text-indigo-600 hover:text-indigo-800">Sign up</a>
+                            Don't have an account ? <a @click="signUp" class="cursor-pointer text-indigo-600 hover:text-indigo-800">Sign up</a>
                         </div>
                     </div>
                 </div>
@@ -99,20 +97,37 @@
     </body>
 </template>
 
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+    html *{
+        font-family: 'Merriweather', serif;
+    }
+</style>
+
 <script>
 export default {
     data(){
         return {
-
+            clickedSignUp:false,
+            user_name: "",
+            password: ""
         }
     },
     methods:{
-        signUp(){},
+        close(){
+            this.clickedSignUp = false;
+        },
+        signUp(){
+            this.clickedSignUp = true;
+        },
         login(){
-            this.$auth.loginWith('local', {data:{
-                username: "Rui Xian",
-                password: "password"
-            }}).then(() => this.$toast.success('Logged In!'))
+            this.$store.dispatch('auth/GET_USER', {
+                "username": this.user_name,
+                "password": this.password
+            })
+            if(this.$store.state.auth.authenticated == true){
+                // this.$router.push("/home")
+            }
         }
     },
     async fetch(){

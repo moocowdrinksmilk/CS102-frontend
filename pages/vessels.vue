@@ -8,17 +8,15 @@
               Vessel view
                 </h1>
           </div>
-          <div class="col-start-4 col-span-1">
-              <input type="search" name="" id="" class="border-2 border-gray-500">
+          <div class="col-start-6 col-span-1">
+              <input type="search" v-model="searchterm" v-on:input="searchVessel" class="border-2 border-gray-500" placeholder="Search">
           </div>
           <div class="col-start-6 align-center">
-              <button type="button" class="bg-blue-700 px-3 py-3 rounded-2xl font-semibold text-white">
-                  + Add Vessel
-              </button>
+              
           </div>
       </div>
         
-      <div class="block h-10 grid grid-cols-9 grid-flow-col gap-2 border-b-2 border-gray-500 text-base">
+      <div class="block h-10 grid grid-cols-9 grid-flow-col gap-2 border-b-2 border-gray-500 h-20 sticky top-0 text-sm py-3 text-gray-700 bg-gray-200 items-end">
           <div>Vessel Name</div>
           <div>Voyage Name</div>
           <div>Speed</div>
@@ -29,13 +27,19 @@
           <div>Status</div>
       </div>
       <vessel-details-item
-      class="my-2"
-      v-for="(vessel, index) in vesselList" :key="index"
-            :vessel_name="vessel.abbrVslm"
-          :voyage_number="vessel.inVoyN"
+      class="mb-2"
+      v-for="(vessel, index) in filteredVesselList" :key="index"
+          :vessel_name="vessel.fullVslM"
+          :abbrvslm="vessel.abbrvslm"
+          :voyage_name="vessel.inVoyN"
+          :speed="vessel.avgSpeed"
+          :distance_to_go="vessel.distanceToGo"
           :berth_time="vessel.berthTime"
+          :unberth_time="vessel.unBerthTime"
           :berth_number="vessel.berthNo"
           :status="vessel.status"
+          :subscribed="vessel.subscribed"
+          :isIncreasing="vessel.increasing"
       ></vessel-details-item>
         
       </div>
@@ -47,15 +51,45 @@ import VesselDetailsItem from '../components/VesselDetailsItem.vue'
 import VesselItem from '../components/VesselItem.vue'
 import moment from 'moment'
 export default {
+  middleware: 'authenticated',
   components: { VesselItem }, 
     data() {
       return {
         vesselList: [],
         filteredVesselList: [],
+        searchterm: "",
+        subscribedVessel:[]
       }
     },
+    methods:{
+       async searchVessel(){
+        console.log(this.searchterm);
+        this.vesselList = await this.$http.$post('http://localhost:8080/vessel/get-vessel-by-shortAbbrVslM', {
+          "abbrVslM" : this.searchterm
+        })
+        this.indicateSubscribed()
+        // console.log(this.searchterm);
+      },
+      indicateSubscribed(){
+        for(let i = 0; i<this.subscribedVessel.length; i++){
+          for(let j = 0; j<this.vesselList.length; j++){
+            if(this.subscribedVessel[i].inVoyN === this.vesselList[j].inVoyN){
+              this.vesselList[j].subscribed = true
+              // console.log(this.vesselList[j]);
+            }else if(this.vesselList[j].subscribed != true){
+              this.vesselList[j].subscribed = false
+            }
+          }
+        }
+        this.filteredVesselList = this.vesselList
+      }
+      
+    },
+    async beforeMount() {
+      this.indicateSubscribed()  
+    },
     async fetch(){
-        this.$http.setHeader("Accept", "application/json")
+      this.$http.setHeader("Accept", "application/json")
       this.$http.setHeader('Content-Type', 'application/json')
       this.vesselList = await this.$http.$post('http://localhost:8080/vessel/getvesselsbydate', 
         {
@@ -63,7 +97,14 @@ export default {
         } 
         
       )
-      console.log(vesselList);
+      this.subscribedVessel = await this.$http.$post('http://localhost:8080/user/get-subscribed', {
+        "username" : "Rui Xian",
+        "sort_by" : "name",
+        "order" : "asc"
+      })
+      this.indicateSubscribed()  
+      console.log(this.vesselList);
+      
     }
 }
 </script>

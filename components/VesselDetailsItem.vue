@@ -4,8 +4,12 @@
   >
     <div>{{ vessel_name }}</div>
     <div>{{ voyage_name }}</div>
-    <div>{{ speed }}</div>
-    <div>{{ distance_to_go }}</div>
+    <div>{{ speed == 0 ? '-' : speed }} 
+      <span v-if="isIncreasing">
+        <i class="arrow up"></i>
+      </span> 
+    </div>
+    <div>{{ distance_to_go == 0 ? '-' : distance_to_go }}</div>
     <div>
       {{
         berth_time.split("T")[1].split(":")[0] +
@@ -14,31 +18,65 @@
         " Hrs"
       }}
     </div>
-    <div>{{ unberth_time }}</div>
-    <div>{{ berth_number }}</div>
+    <div>{{ 
+        unberth_time.split("T")[0] +
+        " \n" +
+        unberth_time.split("T")[1].split(":")[0] +
+        ':' + 
+        unberth_time.split("T")[1].split(":")[1] +
+        " Hrs"
+        }}</div>
+    <div class="text-center pr-6">{{ berth_number }}</div>
     <div>{{ status }}</div>
     <div>
-        <button type="b button" class="bg-blue-300 p-2 rounded-lg">
+      <form action="">
+        <button type="submit" class="bg-blue-300 p-2 rounded-lg" @click="addSubscribed" v-if="subscribed == false">
             Subscribe
         </button>
+        <button type="b button" class="bg-gray-500 cursor-default p-2 rounded-lg" v-else disabled>
+            Subscribed
+        </button>
+        </form>
     </div>
   </div>
 </template>
 
+<style>
+.arrow {
+  border: solid rgb(62, 177, 110);
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+  .up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+</style>
+
 <script>
 export default {
     methods:{
-
+         async addSubscribed(){
+             await this.$http.$post("http://localhost:8080/user/add-subscribed", {
+                    "username" : "Rui Xian",
+                    "abbrVslM" : this.abbrvslm,
+                    "inVoyN" : this.voyage_name
+             })
+        },
     },
   props: {
     vessel_name: String,
+    abbrvslm:String,
     voyage_name: String,
-    speed: String,
-    distance_to_go: String,
+    speed: Number,
+    distance_to_go: Number,
     berth_time: String,
     unberth_time: String,
     berth_number: String,
     status: String,
+    subscribed: Boolean,
+    isIncreasing: Boolean,
   },
 };
 </script>

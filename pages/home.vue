@@ -10,16 +10,16 @@
             Your Watchlist
           </h1>
         <div class="flex">
-          <div class="flex w-full h-56 overflow-x-auto max-w-screen-md min-w-screen-md">
+          <div class="flex w-full h-56 overflow-x-auto max-w-screen-lg min-w-screen-lg">
             <subscribed-item
             v-for="(item, index) in subscribedVessel" :key="index"
             :vessel_name='item.fullVslM'
             :berth_date='item.bthgDt'
+            :voyage_number='item.inVoyN'
+            :status='item.status'
+            :berth_no='item.berthNo'
             >
             </subscribed-item>
-          </div>
-          <div class="max-w-md min-w-md whitespace-normal px-4 shadow-md ml-2 rounded-2xl bg-gray-100">
-            
           </div>
           </div>
         <div>
@@ -32,7 +32,7 @@
                 <span class="mr-1">Status: {{status.charAt(0) + status.toLowerCase().substring(1)}}</span>
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
               </button>
-              <ul class="dropdown-menu absolute hidden text-gray-700 pt-1 right-0">
+              <ul class="dropdown-menu absolute hidden text-gray-700 pt-1 right-0 z-10">
                 <li class="cursor-pointer"><a class="rounded-t bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" @click="filterStatus('All')">All</a></li>
                 <li class="cursor-pointer"><a class="rounded-t bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" @click="filterStatus('BERTHING')">Berthing</a></li>
                 <li class="cursor-pointer"><a class="bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" @click="filterStatus('ALONGSIDE')">Alongside</a></li>
@@ -42,7 +42,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-5 text-sm items-center mt-8 border-b-2 py-4 text-gray-600">
+        <div class="grid grid-cols-5 text-sm top-0 sticky items-center mt-8 border-b-2 py-4 text-gray-600 bg-gray-200">
           <div>
             Vessel Name
           </div>
@@ -63,7 +63,7 @@
         v-for="(vessel, index) in filteredVesselList" :key="index"
         >
           <vessel-item
-          :vessel_name="vessel.abbrVslm"
+          :vessel_name="vessel.fullVslM"
           :voyage_number="vessel.inVoyN"
           :berth_time="vessel.berthTime"
           :berth_number="vessel.berthNo"
@@ -75,7 +75,17 @@
     </div>
 </div>
 </template>
-<style scoped>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&family=Poppins:wght@200&display=swap');    
+  html *{
+        /* font-family: 'Merriweather', serif; */
+        font-family: 'Dosis', sans-serif;
+        /* font-family: 'Poppins', sans-serif; */
+        /* font-family: 'Playfair Display', serif; */
+    } 
+    @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Merriweather&display=swap');
+    
   .h-90{
     height: 22rem;
   }
@@ -87,6 +97,7 @@
 import VesselItem from '../components/VesselItem.vue'
 import moment from 'moment'
 export default {
+  middleware: 'authenticated',
   components: { VesselItem },
     data() {
       return {
@@ -112,9 +123,25 @@ export default {
             this.filteredVesselList.push(this.vesselList[i])
           }
         }
+        console.log("Hello"); 
+        console.log(this.status);
       }
     },
-    mounted(){
+    async beforeMount(){
+      this.$http.setHeader("Accept", "application/json")
+      this.$http.setHeader('Content-Type', 'application/json')
+      this.filteredVesselList = await this.$http.$post('http://localhost:8080/vessel/getvesselsbydate', 
+        {
+          "date": moment().format().substring(0,19)
+        } 
+      )
+      // this.filteredVesselList = this.vesselList
+
+      this.subscribedVessel = await this.$http.$post('http://localhost:8080/user/get-subscribed', {
+        "username" : "Rui Xian",
+        "sort_by" : "name",
+        "order" : "asc"
+      })
     },
     async fetch() {
       this.$http.setHeader("Accept", "application/json")
@@ -125,8 +152,9 @@ export default {
         } 
       )
       this.filteredVesselList = this.vesselList
-      console.log(moment().format());
-      console.log(this.vesselList.length);
+      console.log(this.filteredVesselList);
+      // console.log(moment().format());
+      // console.log(this.vesselList.length);
       for(let i = 0; i<this.vesselList.length; i++){
         // console.log(this.vesselList[i]);
         if(this.vesselList[i].status == "BERTHING"){
@@ -145,6 +173,7 @@ export default {
         "sort_by" : "name",
         "order" : "asc"
       })
+      // console.log(this.subscribedVessel);
     }
 }
 </script>
