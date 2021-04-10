@@ -1,5 +1,10 @@
 <template>
   <div class="md:flex flex-col md:flex-row md:min-h-screen w-full bg-gray-200">
+    <VesselDetailsModal 
+      v-if="vesselDetailsModal" 
+      :abbrvslm="modalAbbrvslm"
+      :voyageName="modalVoyageName"
+    />
     <SideBar />
     <div class="w-full bg-gray-200 ml-56 bg-white p-5">
       <div class="h-20 grid grid-cols-6 grid-flow-col items-center">
@@ -105,6 +110,7 @@
         <div>Status</div>
       </div>
       <vessel-details-item
+        @openDetailsModal="openDetailsModal"
         class="mb-2"
         v-for="(vessel, index) in filteredVesselList"
         :key="index"
@@ -145,9 +151,18 @@ export default {
       subscribedVessel: [],
       date: moment().add(0, "days").format().substring(0, 10),
       days: 0,
+      vesselDetailsModal:false,
+      modalAbbrvslm:"",
+      modalVoyageName:""
     };
   },
+  beforeUpdate(){
+    this.$on('openDetailsModal', ()=>{
+      console.log("jhel");
+    })
+  },
   methods: {
+    // Filter the vessels by date by calling an api
     async filterByDate(num) {
       this.date = moment().add(num, "days").format().substring(0, 10);
       this.$http.setHeader("Accept", "application/json");
@@ -173,9 +188,13 @@ export default {
       );
       this.indicateSubscribed();
     },
+
+    // Display date on the dropdown menu
     displayDate(num) {
       return moment().add(num, "days").format().substring(0, 10);
     },
+
+    // Search for vessels using an api
     async searchVessel() {
       console.log(this.searchterm);
       this.vesselList = await this.$http.$post(
@@ -187,6 +206,8 @@ export default {
       this.indicateSubscribed();
       // console.log(this.searchterm);
     },
+
+    // Indicating ships that are subscribed
     indicateSubscribed() {
       if (this.subscribedVessel.length == 0) {
         for (let i = 0; i < this.vesselList.length; i++) {
@@ -207,6 +228,17 @@ export default {
       }
       this.filteredVesselList = this.vesselList;
     },
+
+    // Opening Modal
+    openDetailsModal(abbrvslm, voyage_name){
+      console.log("Hello");
+      
+
+      this.modalAbbrvslm = abbrvslm
+      console.log(this.modalAbbrvslm);
+      this.modalVoyageName = voyage_name
+      this.vesselDetailsModal = true
+    }
   },
   async beforeMount() {
     // this.indicateSubscribed()
@@ -222,7 +254,6 @@ export default {
     if (process.client) {
       username = JSON.parse(localStorage.getItem("vuex")).auth.user_name;
     }
-    console.log(username);
     this.subscribedVessel = await this.$http.$post(
       "http://localhost:8080/user/get-subscribed",
       {
@@ -232,27 +263,6 @@ export default {
       }
     );
     this.indicateSubscribed();
-    console.log(this.vesselList);
-  },
-  async fetch() {
-    // this.$http.setHeader("Accept", "application/json")
-    // this.$http.setHeader('Content-Type', 'application/json')
-    // this.vesselList = await this.$http.$post('http://localhost:8080/vessel/getvesselsbydate',
-    //   {
-    //     "date": moment().format().substring(0,19)
-    //   }
-    // )
-    // let username = "";
-    // if(process.client){
-    //       username = JSON.parse(await localStorage.getItem("vuex")).auth.user_name
-    //   }
-    // // this.subscribedVessel = await this.$http.$post('http://localhost:8080/user/get-subscribed', {
-    // //   "username" : username,
-    // //   "sort_by" : "name",
-    // //   "order" : "asc"
-    // // })
-    // this.indicateSubscribed()
-    // console.log(this.vesselList);
   },
 };
 </script>

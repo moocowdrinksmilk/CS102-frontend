@@ -2,7 +2,7 @@
   <div
     class="block grid grid-cols-9 grid-flow-col gap-2 border-b-2 border-gray-500 text-base py-4 items-center"
   >
-    <div>{{ vessel_name }}</div>
+    <div class="cursor-pointer hover:text-blue-500" @click="openDetailsModal">{{ vessel_name }}</div>
     <div>{{ voyage_name }}</div>
     <div>{{ speed == 0 ? '-' : speed }} 
       <span v-if="isIncreasing">
@@ -68,6 +68,9 @@ export default {
                     "inVoyN" : this.voyage_name
              })
         },
+        openDetailsModal(){
+          this.$emit("openDetailsModal", this.abbrvslm, this.voyage_name)
+        }
     },
   props: {
     vessel_name: String,
