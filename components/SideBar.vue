@@ -28,14 +28,17 @@
 export default {
   methods:{ 
     logout() {
-      window.localStorage.clear();
+      if(process.client){
+        window.localStorage.clear();
+      }
+      
       this.$router.push('/');
     },
     success: function() {
-       window.console.log("oko success");
+       console.log("oko success");
       },
       close: function() {
-        window.console.log("oko closed");
+        console.log("oko closed");
       }
     }
 }

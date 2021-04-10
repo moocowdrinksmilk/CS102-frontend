@@ -45,7 +45,6 @@
         </form>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -54,7 +53,6 @@ export default {
     return {
       username:"",
       settings:{},
-      changedSettings:{}
     };
   },
   methods: {
@@ -62,9 +60,10 @@ export default {
           await this.$http.$post("http://localhost:8080/user/config", this.settings)
       },
       editSettings(setting){
-        //   console.log(setting);
+          
           this.settings[setting] = !this.settings[setting];
-        //   console.log(this.settings[setting]);
+          // console.log(this.settings);
+          console.log(this.settings[setting]);
       }
   },
   async beforeMount() {

@@ -1,9 +1,7 @@
 <template>
   <div class="md:flex flex-col md:flex-row md:min-h-screen w-full bg-gray-200">
     <VesselDetailsModal 
-      v-if="vesselDetailsModal" 
-      :abbrvslm="modalAbbrvslm"
-      :voyageName="modalVoyageName"
+      v-if="vesselDetailsModal"
     />
     <SideBar />
     <div class="w-full bg-gray-200 ml-56 bg-white p-5">
@@ -137,6 +135,7 @@
 </style>
 
 <script>
+
 import VesselDetailsItem from "../components/VesselDetailsItem.vue";
 import VesselItem from "../components/VesselItem.vue";
 import moment from "moment";
@@ -155,11 +154,6 @@ export default {
       modalAbbrvslm:"",
       modalVoyageName:""
     };
-  },
-  beforeUpdate(){
-    this.$on('openDetailsModal', ()=>{
-      console.log("jhel");
-    })
   },
   methods: {
     // Filter the vessels by date by calling an api
@@ -230,14 +224,14 @@ export default {
     },
 
     // Opening Modal
-    openDetailsModal(abbrvslm, voyage_name){
+    openDetailsModal(abbrvslm, voyageName){
       console.log("Hello");
-      
-
-      this.modalAbbrvslm = abbrvslm
-      console.log(this.modalAbbrvslm);
-      this.modalVoyageName = voyage_name
-      this.vesselDetailsModal = true
+      this.$store.dispatch("vessel/GET_VESSEL", {
+        "abbrvslm" : abbrvslm,
+        "voyageName" : voyageName
+      })
+      console.log(this.$store.state.vessel);
+    this.vesselDetailsModal = true
     }
   },
   async beforeMount() {
