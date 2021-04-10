@@ -58,8 +58,12 @@
 export default {
     methods:{
          async addSubscribed(){
+           let username = ""
+          if(process.client){ 
+                username = JSON.parse(await localStorage.getItem("vuex")).auth.user_name
+            }
              await this.$http.$post("http://localhost:8080/user/add-subscribed", {
-                    "username" : "Rui Xian",
+                    "username" : username,
                     "abbrVslM" : this.abbrvslm,
                     "inVoyN" : this.voyage_name
              })

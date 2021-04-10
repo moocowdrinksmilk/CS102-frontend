@@ -71,6 +71,13 @@ export default {
         // console.log(this.searchterm);
       },
       indicateSubscribed(){
+        if(this.subscribedVessel.length == 0){
+          for(let i = 0; i<this.vesselList.length; i++){
+            this.vesselList[i].subscribed = false;
+          }
+          this.filteredVesselList = this.vesselList
+          return
+        }
         for(let i = 0; i<this.subscribedVessel.length; i++){
           for(let j = 0; j<this.vesselList.length; j++){
             if(this.subscribedVessel[i].inVoyN === this.vesselList[j].inVoyN){
@@ -86,9 +93,7 @@ export default {
       
     },
     async beforeMount() {
-      this.indicateSubscribed()  
-    },
-    async fetch(){
+      this.indicateSubscribed()
       this.$http.setHeader("Accept", "application/json")
       this.$http.setHeader('Content-Type', 'application/json')
       this.vesselList = await this.$http.$post('http://localhost:8080/vessel/getvesselsbydate', 
@@ -97,13 +102,39 @@ export default {
         } 
         
       )
+      let username = ""
+      if(process.client){ 
+            username = JSON.parse(localStorage.getItem("vuex")).auth.user_name
+        }
+      console.log(username);
       this.subscribedVessel = await this.$http.$post('http://localhost:8080/user/get-subscribed', {
-        "username" : "Rui Xian",
+        "username" : username,
         "sort_by" : "name",
         "order" : "asc"
       })
       this.indicateSubscribed()  
       console.log(this.vesselList);
+    },
+    async fetch(){
+      // this.$http.setHeader("Accept", "application/json")
+      // this.$http.setHeader('Content-Type', 'application/json')
+      // this.vesselList = await this.$http.$post('http://localhost:8080/vessel/getvesselsbydate', 
+      //   {
+      //     "date": moment().format().substring(0,19)
+      //   } 
+        
+      // )
+      // let username = ""; 
+      // if(process.client){ 
+      //       username = JSON.parse(await localStorage.getItem("vuex")).auth.user_name
+      //   }
+      // // this.subscribedVessel = await this.$http.$post('http://localhost:8080/user/get-subscribed', {
+      // //   "username" : username,
+      // //   "sort_by" : "name",
+      // //   "order" : "asc"
+      // // })
+      // this.indicateSubscribed()  
+      // console.log(this.vesselList);
       
     }
 }

@@ -136,9 +136,12 @@ export default {
         } 
       )
       // this.filteredVesselList = this.vesselList
-
+      let username = ""
+      if(process.client){ 
+            username = JSON.parse(await localStorage.getItem("vuex")).auth.user_name
+        }
       this.subscribedVessel = await this.$http.$post('http://localhost:8080/user/get-subscribed', {
-        "username" : "Rui Xian",
+        "username" : username,
         "sort_by" : "name",
         "order" : "asc"
       })
@@ -168,11 +171,11 @@ export default {
         }
       }
 
-      this.subscribedVessel = await this.$http.$post('http://localhost:8080/user/get-subscribed', {
-        "username" : "Rui Xian",
-        "sort_by" : "name",
-        "order" : "asc"
-      })
+      // this.subscribedVessel = await this.$http.$post('http://localhost:8080/user/get-subscribed', {
+      //   "username" : "Rui Xian",
+      //   "sort_by" : "name",
+      //   "order" : "asc"
+      // })
       // console.log(this.subscribedVessel);
     }
 }

@@ -125,9 +125,6 @@ export default {
                 "username": this.user_name,
                 "password": this.password
             })
-            if(this.$store.state.auth.authenticated == true){
-                // this.$router.push("/home")
-            }
         }
     },
     async fetch(){
