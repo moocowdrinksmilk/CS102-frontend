@@ -1,6 +1,7 @@
 <template>
     <div class="md:flex flex-col md:flex-row md:min-h-screen w-full">
     <SideBar class=""/>
+    <VesselDetailsModal v-if="vesselDetailsModal" @closeModal="closeModal"/>
     <div class="w-full bg-gray-200 ml-56 ">
       <div class="px-20">
         <h1 class="text-5xl my-8">
@@ -12,12 +13,14 @@
         <div class="flex">
           <div class="flex w-full h-56 overflow-x-auto max-w-screen-lg min-w-screen-lg">
             <subscribed-item
+            @openDetailsModal="openDetailsModal"
             v-for="(item, index) in subscribedVessel" :key="index"
             :vessel_name='item.fullVslM'
             :berth_date='item.bthgDt'
             :voyage_number='item.inVoyN'
             :status='item.status'
             :berth_no='item.berthNo'
+            :abbrvslm='item.abbrVslM'
             >
             </subscribed-item>
           </div>
@@ -107,7 +110,8 @@ export default {
         berthing: 0,
         alongSide: 0,
         unBerthed: 0,
-        status: "All"
+        status: "All",
+        vesselDetailsModal:false,
       }
     },
     methods:{
@@ -125,7 +129,13 @@ export default {
         }
         console.log("Hello"); 
         console.log(this.status);
-      }
+      },
+      openDetailsModal(){
+        this.vesselDetailsModal = true
+      },
+      closeModal(){
+      this.vesselDetailsModal = false
+    }, 
     },
     async beforeMount(){
       this.$http.setHeader("Accept", "application/json")
@@ -145,6 +155,7 @@ export default {
         "sort_by" : "name",
         "order" : "asc"
       })
+      console.log(this.subscribedVessel);
     },
     async fetch() {
       this.$http.setHeader("Accept", "application/json")

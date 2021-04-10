@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="w-48 bg-gray-400 h-56 mr-8 rounded-3xl px-4 py-4">
+    <div class="">
+        <div @click="openDetailsModal" class="w-48 bg-gray-400 h-56 mr-8 rounded-3xl px-4 py-4 cursor-pointer">
             <div class="text-md font-semibold flex justify-between items-center">
                 <div>
                     {{vessel_name}}
@@ -46,12 +46,18 @@
 
 <script>
 export default {
+    methods:{
+        openDetailsModal(){
+          this.$emit("openDetailsModal", this.abbrvslm, this.voyage_number)
+        }
+    },
     props: {
         vessel_name: String,
         berth_date: String,
         voyage_number: String,
         status: String,
-        berth_no:String
+        berth_no:String,
+        abbrvslm:String
     }
 }
 </script>

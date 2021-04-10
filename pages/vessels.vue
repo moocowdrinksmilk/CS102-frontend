@@ -1,6 +1,7 @@
 <template>
   <div class="md:flex flex-col md:flex-row md:min-h-screen w-full bg-gray-200">
     <VesselDetailsModal 
+    @closeModal="closeModal"
       v-if="vesselDetailsModal"
     />
     <SideBar />
@@ -156,6 +157,9 @@ export default {
     };
   },
   methods: {
+    closeModal(){
+      this.vesselDetailsModal = false
+    },  
     // Filter the vessels by date by calling an api
     async filterByDate(num) {
       this.date = moment().add(num, "days").format().substring(0, 10);
