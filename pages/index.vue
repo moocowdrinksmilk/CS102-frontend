@@ -98,10 +98,7 @@
 </template>
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
-    html *{
-        font-family: 'Merriweather', serif;
-    }
+    
 </style>
 
 <script>

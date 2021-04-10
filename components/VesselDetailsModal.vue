@@ -26,6 +26,7 @@
         </div>
 
         <bar-chart class="m-4" :height="200" />
+
         <div>
           <form action="">
             <button
@@ -102,7 +103,7 @@ export default {
       isSubscribed: false,
     };
   },
-  async beforeMount() {
+  async beforeCreate() {
     this.vessel = await this.$http.$post(
       "http://localhost:8080/vessel/getvessel",
       {
@@ -110,22 +111,22 @@ export default {
         inVoyN: this.$store.state.vessel.voyageName,
       }
     );
-    this.speed = await this.$http.$post(
-      "http://localhost:8080/vessel/get-vessel-speed-history",
-      {
-        vsl_voy:
-          this.$store.state.vessel.abbrvslm.replace(/\s/g, "") +
-          this.$store.state.vessel.voyageName,
-      }
-    );
-    for (let i = 0; i < this.speed.length; i++) {
-      this.speedNum.push(this.speed[i]["Average Speed"]);
-      this.speedTime.push(this.speed[i].Time.split(" ")[0]);
-    }
-    this.$store.dispatch("speed/GET_SPEED", {
-      vesselSpeed: this.speedNum,
-      vesselTime: this.speedTime,
-    });
+    // this.speed = await this.$http.$post(
+    //   "http://localhost:8080/vessel/get-vessel-speed-history",
+    //   {
+    //     vsl_voy:
+    //       this.$store.state.vessel.abbrvslm.replace(/\s/g, "") +
+    //       this.$store.state.vessel.voyageName,
+    //   }
+    // );
+    // for (let i = 0; i < this.speed.length; i++) {
+    //   this.speedNum.push(this.speed[i]["Average Speed"]);
+    //   this.speedTime.push(this.speed[i].Time.split(" ")[0]);
+    // }
+    // this.$store.dispatch("speed/GET_SPEED", {
+    //   vesselSpeed: this.speedNum,
+    //   vesselTime: this.speedTime,
+    // });
 
     let username = "";
     if (process.client) {

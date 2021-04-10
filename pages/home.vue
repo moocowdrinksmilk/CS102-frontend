@@ -79,16 +79,8 @@
 </div>
 </template>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&family=Poppins:wght@200&display=swap');    
-  html *{
-        /* font-family: 'Merriweather', serif; */
-        font-family: 'Dosis', sans-serif;
-        /* font-family: 'Poppins', sans-serif; */
-        /* font-family: 'Playfair Display', serif; */
-    } 
-    @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Merriweather&display=swap');
-    
+     
+
   .h-90{
     height: 22rem;
   }
@@ -112,6 +104,8 @@ export default {
         unBerthed: 0,
         status: "All",
         vesselDetailsModal:false,
+        speed:[],
+
       }
     },
     methods:{
@@ -127,13 +121,33 @@ export default {
             this.filteredVesselList.push(this.vesselList[i])
           }
         }
-        console.log("Hello"); 
-        console.log(this.status);
       },
-      openDetailsModal(){
-        this.vesselDetailsModal = true
-      },
-      closeModal(){
+      async openDetailsModal(abbrvslm, voyageName){
+      this.$store.dispatch("vessel/GET_VESSEL", {
+        "abbrvslm" : abbrvslm,
+        "voyageName" : voyageName
+      })
+      this.speed = await this.$http.$post(
+      "http://localhost:8080/vessel/get-vessel-speed-history",
+      {
+        vsl_voy:
+          abbrvslm.replace(/\s/g, "") + voyageName,
+      }
+    );
+    let speedNum = []
+    let speedTime = []
+    for (let i = 0; i < this.speed.length; i++) {
+      speedNum.push(this.speed[i]["Average Speed"]);
+      speedTime.push(this.speed[i].Time.split(" ")[0]);
+    }
+    this.$store.dispatch("speed/GET_SPEED", {
+      vesselSpeed: speedNum,
+      vesselTime: speedTime,
+    });
+      console.log(this.$store.state.vessel);
+    this.vesselDetailsModal = true
+    },
+    closeModal(){
       this.vesselDetailsModal = false
     }, 
     },

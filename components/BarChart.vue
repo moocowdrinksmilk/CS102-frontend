@@ -4,7 +4,18 @@ export default {
   extends: Line,
   // props: ['data', 'options'],
   mounted() {
+    console.log("CHARTTT");
     this.renderChart(this.barChartData, this.barChartOptions)
+  },
+  beforeDestroy(){
+    this._data._chart.destroy();
+  },
+  watch: {
+    barChartData: function() {
+      this._data._chart.destroy();
+      this.renderChart(this.barChartData, this.barChartOptions);
+      this.renderLineChart();
+    }
   },
   data() {
     return {
