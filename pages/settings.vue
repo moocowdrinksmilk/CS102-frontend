@@ -6,40 +6,43 @@
         Settings
       </div>
       <div class="">
-        <div class="flex h-32">
-          <div class="bg-red-500 h-full items-center">Profile</div>
-        </div>
+        
         <div class="">
-          <div class="flex justify-between px-6 h-20 items-center">
+          <div class="flex justify-between px-6 h-16 items-center">
             <div>Change in Berthing Date</div>
-            <Toggle :isChecked="settings.btrDtAlert"/>
+            <Toggle :isChecked="settings.btrDtAlert" :setting="'btrdt'" @changeSettings="editSettings('btrDtAlert')"/>
           </div>
-          <div class="flex justify-between px-6 h-20 items-center">
+          <div class="flex justify-between px-6 h-16 items-center">
             <div>Change in Berth Number</div>
-            <Toggle :isChecked="this.settings.berthNAlert"/>
+            <Toggle :isChecked="this.settings.berthNAlert" @changeSettings="editSettings('btrDtAlert')"/>
           </div>
-          <div class="flex justify-between px-6 h-20 items-center">
+          <div class="flex justify-between px-6 h-16 items-center">
             <div>Change in Vessel Status</div>
-            <Toggle :isChecked="this.settings.statusAlert" v-model="checked" />
+            <Toggle :isChecked="this.settings.statusAlert" v-model="checked" @changeSettings="editSettings('statusAlert')"/>
           </div>
-          <div class="flex justify-between px-6 h-20 items-center">
+          <div class="flex justify-between px-6 h-16 items-center">
             <div>Change in Average Speed</div>
-            <Toggle :isChecked="this.settings.avgSpeedAlert"/>
+            <Toggle :isChecked="this.settings.avgSpeedAlert" @changeSettings="editSettings('avgSpeedAlert')"/>
           </div>
-          <div class="flex justify-between px-6 h-20 items-center">
+          <div class="flex justify-between px-6 h-16 items-center">
             <div>Change in Distance to go</div>
-            <Toggle :isChecked="this.settings.distanceToGoAlert"/>
+            <Toggle :isChecked="this.settings.distanceToGoAlert" @changeSettings="editSettings('distanceToGoAlert')"/>
           </div>
-          <div class="flex justify-between px-6 h-20 items-center">
+          <div class="flex justify-between px-6 h-16 items-center">
             <div>Change in Max Speed</div>
-            <Toggle :isChecked="this.settings.maxSpeedAlert"/>
+            <Toggle :isChecked="this.settings.maxSpeedAlert" @changeSettings="editSettings('maxSpeedAlert')"/>
           </div>
         </div>
-        <div class="flex justify-end px-8">
-            <button class="bg-gray-400 p-4 rounded-2xl">
-                Save Changes
-            </button>
+        <div class="flex justify-between px-6 h-16 items-center">
+            <div>Opt in for email</div>
+            <Toggle :isChecked="this.settings.emailOptIn" @changeSettings="editSettings('emailOptIn')"/>
+          </div>
         </div>
+        <form action="">
+          <div class="flex justify-end px-8 mt-6">
+            <button class="bg-gray-400 p-4 rounded-2xl" @click="saveChanges" type="submit">Save Changes</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -47,22 +50,33 @@
 
 <script>
 export default {
-    data(){
-        return{
-            settings: {}        
-        }
-    },
-    methods:{
-        
-    },
-    async beforeMount(){
-        let username = "";
-        if(process.client){ 
-            username = JSON.parse(await localStorage.getItem("vuex")).auth.user_name
-        }
-        this.settings = await this.$http.$get("http://localhost:8080/user/get/" + username);
-        console.log(this.settings);
-    },
-    
-}
+  data() {
+    return {
+      username:"",
+      settings:{},
+      changedSettings:{}
+    };
+  },
+  methods: {
+      async saveChanges(){
+          await this.$http.$post("http://localhost:8080/user/config", this.settings)
+      },
+      editSettings(setting){
+        //   console.log(setting);
+          this.settings[setting] = !this.settings[setting];
+        //   console.log(this.settings[setting]);
+      }
+  },
+  async beforeMount() {
+    let username = "";
+    if (process.client) {
+      username = JSON.parse(await localStorage.getItem("vuex")).auth.user_name;
+    }
+    this.username = username
+    this.settings = await this.$http.$get(
+      "http://localhost:8080/user/get/" + username
+    );
+    console.log(this.settings);
+  },
+};
 </script>

@@ -1,141 +1,258 @@
 <template>
-    <div class="md:flex flex-col md:flex-row md:min-h-screen w-full bg-gray-200">
-      <SideBar/>
-      <div class="w-full bg-gray-200 ml-56 bg-white p-5">
+  <div class="md:flex flex-col md:flex-row md:min-h-screen w-full bg-gray-200">
+    <SideBar />
+    <div class="w-full bg-gray-200 ml-56 bg-white p-5">
       <div class="h-20 grid grid-cols-6 grid-flow-col items-center">
-          <div class="col-span-2">
-              <h1 class="text-xl font-medium">
-              Vessel view
-                </h1>
+        <div class="col-span-2">
+          <h1 class="text-xl font-medium">Vessel view</h1>
+        </div>
+
+        <!-- Dropdown date -->
+        <div class="col-start-5 col-span-1">
+          <div class="dropdown inline-block relative">
+            <button
+              class="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
+            >
+              <span class="">Date: {{date}}</span>
+              <svg
+                class="fill-current h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                />
+              </svg>
+            </button>
+            <ul
+              class="dropdown-menu absolute hidden text-gray-700 pt-1 right-0 z-10"
+            >
+              <li class="cursor-pointer">
+                <a
+                  class="rounded-t bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                  @click="filterByDate(0)"
+                  >{{ displayDate(0) }}</a
+                >
+              </li>
+              <li class="cursor-pointer">
+                <a
+                  class="rounded-t bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                  @click="filterByDate(1)"
+                  >{{ displayDate(1) }}</a
+                >
+              </li>
+              <li class="cursor-pointer">
+                <a
+                  class="bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                  @click="filterByDate(2)"
+                  >{{ displayDate(2) }}</a
+                >
+              </li>
+              <li class="cursor-pointer">
+                <a
+                  class="rounded-b bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                  @click="filterByDate(3)"
+                  >{{ displayDate(3) }}</a
+                >
+              </li>
+              <li class="cursor-pointer">
+                <a
+                  class="rounded-b bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                  @click="filterByDate(4)"
+                  >{{ displayDate(4) }}</a
+                >
+              </li>
+              <li class="cursor-pointer">
+                <a
+                  class="rounded-b bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                  @click="filterByDate(5)"
+                  >{{ displayDate(5) }}</a
+                >
+              </li>
+              <li class="cursor-pointer">
+                <a
+                  class="rounded-b bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                  @click="filterByDate(6)"
+                  >{{ displayDate(6) }}</a
+                >
+              </li>
+            </ul>
           </div>
-          <div class="col-start-6 col-span-1">
-              <input type="search" v-model="searchterm" v-on:input="searchVessel" class="border-2 border-gray-500" placeholder="Search">
-          </div>
-          <div class="col-start-6 align-center">
-              
-          </div>
+        </div>
+
+        <div class="col-start-6 col-span-1">
+          <input
+            type="search"
+            v-model="searchterm"
+            v-on:input="searchVessel"
+            class="border-2 border-gray-500"
+            placeholder="Search"
+          />
+        </div>
+        <div class="col-start-6 align-center"></div>
       </div>
-        
-      <div class="block h-10 grid grid-cols-9 grid-flow-col gap-2 border-b-2 border-gray-500 h-20 sticky top-0 text-sm py-3 text-gray-700 bg-gray-200 items-end">
-          <div>Vessel Name</div>
-          <div>Voyage Name</div>
-          <div>Speed</div>
-          <div>Distance to go</div>
-          <div>Berthing Time</div>
-          <div>Departure Time</div>
-          <div>Berth Number</div>
-          <div>Status</div>
+
+      <div
+        class="block h-10 grid grid-cols-9 grid-flow-col gap-2 border-b-2 border-gray-500 h-20 sticky top-0 text-sm py-3 text-gray-700 bg-gray-200 items-end"
+      >
+        <div>Vessel Name</div>
+        <div>Voyage Name</div>
+        <div>Speed</div>
+        <div>Distance to go</div>
+        <div>Berthing Time</div>
+        <div>Departure Time</div>
+        <div>Berth Number</div>
+        <div>Status</div>
       </div>
       <vessel-details-item
-      class="mb-2"
-      v-for="(vessel, index) in filteredVesselList" :key="index"
-          :vessel_name="vessel.fullVslM"
-          :abbrvslm="vessel.abbrvslm"
-          :voyage_name="vessel.inVoyN"
-          :speed="vessel.avgSpeed"
-          :distance_to_go="vessel.distanceToGo"
-          :berth_time="vessel.berthTime"
-          :unberth_time="vessel.unBerthTime"
-          :berth_number="vessel.berthNo"
-          :status="vessel.status"
-          :subscribed="vessel.subscribed"
-          :isIncreasing="vessel.increasing"
+        class="mb-2"
+        v-for="(vessel, index) in filteredVesselList"
+        :key="index"
+        :vessel_name="vessel.fullVslM"
+        :abbrvslm="vessel.abbrvslm"
+        :voyage_name="vessel.inVoyN"
+        :speed="vessel.avgSpeed"
+        :distance_to_go="vessel.distanceToGo"
+        :berth_time="vessel.berthTime"
+        :unberth_time="vessel.unBerthTime"
+        :berth_number="vessel.berthNo"
+        :status="vessel.status"
+        :subscribed="vessel.subscribed"
+        :isIncreasing="vessel.increasing"
       ></vessel-details-item>
-        
-      </div>
     </div>
+  </div>
 </template>
 
-<script>
-import VesselDetailsItem from '../components/VesselDetailsItem.vue'
-import VesselItem from '../components/VesselItem.vue'
-import moment from 'moment'
-export default {
-  middleware: 'authenticated',
-  components: { VesselItem }, 
-    data() {
-      return {
-        vesselList: [],
-        filteredVesselList: [],
-        searchterm: "",
-        subscribedVessel:[]
-      }
-    },
-    methods:{
-       async searchVessel(){
-        console.log(this.searchterm);
-        this.vesselList = await this.$http.$post('http://localhost:8080/vessel/get-vessel-by-shortAbbrVslM', {
-          "abbrVslM" : this.searchterm
-        })
-        this.indicateSubscribed()
-        // console.log(this.searchterm);
-      },
-      indicateSubscribed(){
-        if(this.subscribedVessel.length == 0){
-          for(let i = 0; i<this.vesselList.length; i++){
-            this.vesselList[i].subscribed = false;
-          }
-          this.filteredVesselList = this.vesselList
-          return
-        }
-        for(let i = 0; i<this.subscribedVessel.length; i++){
-          for(let j = 0; j<this.vesselList.length; j++){
-            if(this.subscribedVessel[i].inVoyN === this.vesselList[j].inVoyN){
-              this.vesselList[j].subscribed = true
-              // console.log(this.vesselList[j]);
-            }else if(this.vesselList[j].subscribed != true){
-              this.vesselList[j].subscribed = false
-            }
-          }
-        }
-        this.filteredVesselList = this.vesselList
-      }
-      
-    },
-    async beforeMount() {
-      this.indicateSubscribed()
-      this.$http.setHeader("Accept", "application/json")
-      this.$http.setHeader('Content-Type', 'application/json')
-      this.vesselList = await this.$http.$post('http://localhost:8080/vessel/getvesselsbydate', 
-        {
-          "date": moment().format().substring(0,19)
-        } 
-        
-      )
-      let username = ""
-      if(process.client){ 
-            username = JSON.parse(localStorage.getItem("vuex")).auth.user_name
-        }
-      console.log(username);
-      this.subscribedVessel = await this.$http.$post('http://localhost:8080/user/get-subscribed', {
-        "username" : username,
-        "sort_by" : "name",
-        "order" : "asc"
-      })
-      this.indicateSubscribed()  
-      console.log(this.vesselList);
-    },
-    async fetch(){
-      // this.$http.setHeader("Accept", "application/json")
-      // this.$http.setHeader('Content-Type', 'application/json')
-      // this.vesselList = await this.$http.$post('http://localhost:8080/vessel/getvesselsbydate', 
-      //   {
-      //     "date": moment().format().substring(0,19)
-      //   } 
-        
-      // )
-      // let username = ""; 
-      // if(process.client){ 
-      //       username = JSON.parse(await localStorage.getItem("vuex")).auth.user_name
-      //   }
-      // // this.subscribedVessel = await this.$http.$post('http://localhost:8080/user/get-subscribed', {
-      // //   "username" : username,
-      // //   "sort_by" : "name",
-      // //   "order" : "asc"
-      // // })
-      // this.indicateSubscribed()  
-      // console.log(this.vesselList);
-      
-    }
+<style>
+.dropdown:hover .dropdown-menu {
+  display: block;
 }
+</style>
+
+<script>
+import VesselDetailsItem from "../components/VesselDetailsItem.vue";
+import VesselItem from "../components/VesselItem.vue";
+import moment from "moment";
+export default {
+  middleware: "authenticated",
+  components: { VesselItem },
+  data() {
+    return {
+      vesselList: [],
+      filteredVesselList: [],
+      searchterm: "",
+      subscribedVessel: [],
+      date: moment().add(0, "days").format().substring(0, 10),
+      days: 0,
+    };
+  },
+  methods: {
+    async filterByDate(num) {
+      this.date = moment().add(num, "days").format().substring(0, 10);
+      this.$http.setHeader("Accept", "application/json");
+      this.$http.setHeader("Content-Type", "application/json");
+      this.vesselList = await this.$http.$post(
+        "http://localhost:8080/vessel/getvesselsbydate",
+        {
+          date: moment().add(num, "days").format().substring(0, 19),
+        }
+      );
+      let username = "";
+      if (process.client) {
+        username = JSON.parse(localStorage.getItem("vuex")).auth.user_name;
+      }
+      // console.log(username);
+      this.subscribedVessel = await this.$http.$post(
+        "http://localhost:8080/user/get-subscribed",
+        {
+          username: username,
+          sort_by: "name",
+          order: "asc",
+        }
+      );
+      this.indicateSubscribed();
+    },
+    displayDate(num) {
+      return moment().add(num, "days").format().substring(0, 10);
+    },
+    async searchVessel() {
+      console.log(this.searchterm);
+      this.vesselList = await this.$http.$post(
+        "http://localhost:8080/vessel/get-vessel-by-shortAbbrVslM",
+        {
+          abbrVslM: this.searchterm,
+        }
+      );
+      this.indicateSubscribed();
+      // console.log(this.searchterm);
+    },
+    indicateSubscribed() {
+      if (this.subscribedVessel.length == 0) {
+        for (let i = 0; i < this.vesselList.length; i++) {
+          this.vesselList[i].subscribed = false;
+        }
+        this.filteredVesselList = this.vesselList;
+        return;
+      }
+      for (let i = 0; i < this.subscribedVessel.length; i++) {
+        for (let j = 0; j < this.vesselList.length; j++) {
+          if (this.subscribedVessel[i].inVoyN === this.vesselList[j].inVoyN) {
+            this.vesselList[j].subscribed = true;
+            // console.log(this.vesselList[j]);
+          } else if (this.vesselList[j].subscribed != true) {
+            this.vesselList[j].subscribed = false;
+          }
+        }
+      }
+      this.filteredVesselList = this.vesselList;
+    },
+  },
+  async beforeMount() {
+    // this.indicateSubscribed()
+    this.$http.setHeader("Accept", "application/json");
+    this.$http.setHeader("Content-Type", "application/json");
+    this.vesselList = await this.$http.$post(
+      "http://localhost:8080/vessel/getvesselsbydate",
+      {
+        date: moment().format().substring(0, 19),
+      }
+    );
+    let username = "";
+    if (process.client) {
+      username = JSON.parse(localStorage.getItem("vuex")).auth.user_name;
+    }
+    console.log(username);
+    this.subscribedVessel = await this.$http.$post(
+      "http://localhost:8080/user/get-subscribed",
+      {
+        username: username,
+        sort_by: "name",
+        order: "asc",
+      }
+    );
+    this.indicateSubscribed();
+    console.log(this.vesselList);
+  },
+  async fetch() {
+    // this.$http.setHeader("Accept", "application/json")
+    // this.$http.setHeader('Content-Type', 'application/json')
+    // this.vesselList = await this.$http.$post('http://localhost:8080/vessel/getvesselsbydate',
+    //   {
+    //     "date": moment().format().substring(0,19)
+    //   }
+    // )
+    // let username = "";
+    // if(process.client){
+    //       username = JSON.parse(await localStorage.getItem("vuex")).auth.user_name
+    //   }
+    // // this.subscribedVessel = await this.$http.$post('http://localhost:8080/user/get-subscribed', {
+    // //   "username" : username,
+    // //   "sort_by" : "name",
+    // //   "order" : "asc"
+    // // })
+    // this.indicateSubscribed()
+    // console.log(this.vesselList);
+  },
+};
 </script>

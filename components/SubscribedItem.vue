@@ -21,16 +21,16 @@
             </div>
             <br>
             <div class="mb-1">
-                Voy {{voyage_number}}
+                <span class="text-sm">inVoyn: </span> {{voyage_number}}
             </div>
             <div>
-                {{
+                <span class="text-sm">Berth Date: </span>{{
                     berth_date.split("T")[0]
                     
                 }}
             </div>
             <div>
-                {{
+                <span class="text-sm">Berth Time: </span>{{
                     berth_date.split("T")[1].split(":")[0] +
                     ":" +
                     berth_date.split("T")[1].split(":")[1] +
@@ -38,7 +38,7 @@
                 }}
             </div>
             <div>
-                {{berth_no}}
+                <span class="text-sm">Berth No: </span>{{berth_no}}
             </div>
         </div>
     </div>

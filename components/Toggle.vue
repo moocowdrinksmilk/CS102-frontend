@@ -5,7 +5,8 @@
   
   <input
   v-if="isChecked"
-    checked = checked
+    checked = this.isisChecked
+    @click="changeSettings"
       type="checkbox"
       name="toggle"
       id="toggle"
@@ -14,6 +15,7 @@
   
     <input
     v-else
+    @click="changeSettings"
       type="checkbox"
       name="toggle"
       id="toggle"
@@ -42,8 +44,14 @@
 
 <script>
 export default {
+  methods:{
+    changeSettings(){
+      this.$emit("changeSettings")
+    }
+  },
     props:{
         isChecked:Boolean,
-    }
+        setting:String
+    },
 }
 </script>
