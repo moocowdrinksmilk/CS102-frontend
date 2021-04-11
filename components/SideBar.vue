@@ -1,5 +1,6 @@
 <template>
 <div class=" bg-indigo-100 bottom-0 top-0 fixed">
+  <a href="/home">
   <div @click="open = false" class="flex w-full md:w-56 text-gray-700 bg-indigo-100 dark-mode:text-gray-200 dark-mode:bg-gray-800 flex-shrink-0" x-data="{ open: false }">
     <div class="flex-shrink-0 px-8 py-4 flex flex-row items-center justify-between bg-indigo-100">
       <svg class="w-10 text-indigo-500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 225 225" style="enable-background:new 0 0 225 225;" xml:space="preserve">
@@ -23,6 +24,7 @@
         </svg>
       </button>
     </div>
+    </a>
     <nav :class="{'block': open, 'hidden': !open}" class="flex-grow md:block px-4 pb-4 md:pb-0 md:overflow-y-auto  bg-indigo-100  top-0 w-full bottom-0">
       <a class="block px-4 py-2 mt-2 text-sm font-semibold hover:bg-gray-400 text-gray-900 rounded-lg hover:text-gray-900 focus:text-gray-900 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/home">Overview</a>
       <nuxt-link class="block px-4 py-2 mt-2 text-sm font-semibold text-black bg-transparent rounded-lg hover:text-gray-900 focus:text-gray-900 hover:bg-gray-400 focus:bg-gray-200 focus:outline-none focus:shadow-outline" to="vessels">Vessels</nuxt-link>

@@ -94,7 +94,7 @@
       </div>
 
       <div
-        class="block h-10 grid grid-cols-9 grid-flow-col gap-2 border-b-2 border-gray-500 h-20 sticky top-0 text-sm py-3 text-gray-700 bg-white items-end z-30"
+        class="block h-10 grid grid-cols-9 grid-flow-col gap-2 border-b-2 border-gray-500 h-20 sticky top-0 text-sm py-3 text-gray-700 bg-white items-end z-0"
       >
         <div>Vessel Name</div>
         <div>Voyage Name</div>
