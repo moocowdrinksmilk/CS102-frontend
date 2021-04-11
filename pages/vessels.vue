@@ -1,14 +1,11 @@
 <template>
   <div class="md:flex flex-col md:flex-row md:min-h-screen w-full bg-gray-200">
-    <VesselDetailsModal 
-    @closeModal="closeModal"
-      v-if="vesselDetailsModal"
-    />
+    <VesselDetailsModal @closeModal="closeModal" v-if="vesselDetailsModal" />
     <SideBar />
-    <div class="w-full bg-gray-200 ml-56 bg-white p-5">
+    <div class="w-full bg-white ml-56 bg-white p-5">
       <div class="h-20 grid grid-cols-6 grid-flow-col items-center">
         <div class="col-span-2">
-          <h1 class="text-xl font-medium">Vessel view</h1>
+          <h1 class="text-xl font-medium">Vessel View</h1>
         </div>
 
         <!-- Dropdown date -->
@@ -17,7 +14,7 @@
             <button
               class="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
             >
-              <span class="">Date: {{date}}</span>
+              <span class="">Date: {{ date }}</span>
               <svg
                 class="fill-current h-4 w-4"
                 xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +26,7 @@
               </svg>
             </button>
             <ul
-              class="dropdown-menu absolute hidden text-gray-700 pt-1 right-0 z-10"
+              class="dropdown-menu absolute hidden text-gray-700 pt-1 right-0 z-20"
             >
               <li class="cursor-pointer">
                 <a
@@ -97,7 +94,7 @@
       </div>
 
       <div
-        class="block h-10 grid grid-cols-9 grid-flow-col gap-2 border-b-2 border-gray-500 h-20 sticky top-0 text-sm py-3 text-gray-700 bg-gray-200 items-end"
+        class="z-0 block h-10 grid grid-cols-9 grid-flow-col gap-2 border-b-2 border-gray-500 h-20 sticky top-0 text-sm py-3 text-gray-700 bg-white items-end"
       >
         <div>Vessel Name</div>
         <div>Voyage Name</div>
@@ -153,7 +150,8 @@ export default {
       days: 0,
       vesselDetailsModal:false,
       modalAbbrvslm:"",
-      modalVoyageName:""
+      modalVoyageName:"",
+      speed : [],
     };
   },
   methods: {
@@ -199,6 +197,7 @@ export default {
         "http://localhost:8080/vessel/get-vessel-by-shortAbbrVslM",
         {
           abbrVslM: this.searchterm,
+          date:this.date
         }
       );
       this.indicateSubscribed();
@@ -228,13 +227,33 @@ export default {
     },
 
     // Opening Modal
-    openDetailsModal(abbrvslm, voyageName){
+    async openDetailsModal(abbrvslm, voyageName){
       console.log("Hello");
       this.$store.dispatch("vessel/GET_VESSEL", {
         "abbrvslm" : abbrvslm,
         "voyageName" : voyageName
       })
+      
+      this.speed = await this.$http.$post(
+      "http://localhost:8080/vessel/get-vessel-speed-history",
+      {
+        vsl_voy:
+          abbrvslm.replace(/\s/g, "") + voyageName,
+      }
+    );
+    let speedNum = []
+    let speedTime = []
+    for (let i = 0; i < this.speed.length; i++) {
+      speedNum.push(this.speed[i]["Average Speed"]);
+      speedTime.push(this.speed[i].Time.split(" ")[0]);
+    }
+    this.$store.dispatch("speed/GET_SPEED", {
+      vesselSpeed: speedNum,
+      vesselTime: speedTime,
+    });
       console.log(this.$store.state.vessel);
+    this.vesselDetailsModal = true
+
     this.vesselDetailsModal = true
     }
   },

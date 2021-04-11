@@ -1,16 +1,16 @@
 <template>
   <div
-    class="block grid grid-cols-9 grid-flow-col gap-2 border-b-2 border-gray-500 text-base py-4 items-center"
+    class="block grid grid-cols-9 grid-flow-col gap-2 border-b-2 border-gray-200 text-base py-4 items-center"
   >
     <div class="cursor-pointer hover:text-blue-500" @click="openDetailsModal">{{ vessel_name }}</div>
-    <div>{{ voyage_name }}</div>
-    <div>{{ speed == 0 ? '-' : speed }} 
+    <div class="text-gray-600">{{ voyage_name }}</div>
+    <div class="text-gray-600">{{ speed == 0 ? '-' : speed }} 
       <span v-if="isIncreasing">
         <i class="arrow up"></i>
       </span> 
     </div>
-    <div>{{ distance_to_go == 0 ? '-' : distance_to_go }}</div>
-    <div>
+    <div class="text-gray-600">{{ distance_to_go == 0 ? '-' : distance_to_go }}</div>
+    <div class="text-gray-600">
       {{
         berth_time.split("T")[1].split(":")[0] +
         ":" +
@@ -18,7 +18,7 @@
         " Hrs"
       }}
     </div>
-    <div>{{ 
+    <div class="text-gray-600">{{ 
         unberth_time.split("T")[0] +
         " \n" +
         unberth_time.split("T")[1].split(":")[0] +
@@ -26,14 +26,14 @@
         unberth_time.split("T")[1].split(":")[1] +
         " Hrs"
         }}</div>
-    <div class="text-center pr-6">{{ berth_number }}</div>
-    <div>{{ status }}</div>
+    <div class="text-center pr-6 text-gray-600">{{ berth_number }}</div>
+    <div class="text-gray-600">{{ status }}</div>
     <div>
       <form action="">
-        <button type="submit" class="bg-blue-300 p-2 rounded-lg" @click="addSubscribed" v-if="subscribed == false">
+        <button type="submit" class="bg-indigo-500 p-2 rounded-lg text-white w-24" @click="addSubscribed" v-if="subscribed == false">
             Subscribe
         </button>
-        <button type="b button" class="bg-gray-500 cursor-default p-2 rounded-lg" v-else disabled>
+        <button type="b button" class="bg-gray-500 cursor-default p-2 rounded-lg text-white w-24" v-else disabled>
             Subscribed
         </button>
         </form>

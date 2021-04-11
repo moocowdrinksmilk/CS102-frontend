@@ -1,27 +1,59 @@
 <template>
-  <div class="fixed z-50">
+  <div class="">
     <div
       class="absolute h-screen w-screen opacity-25 bg-gray-500 z-40 flex justify-center"
     ></div>
 
-    <div class="absolute h-1/2 w-screen z-50 flex justify-center">
+    <div class="absolute h-1/2 w-screen z-40 flex justify-center">
       <div
-        class="text-sm text-black bg-white mt-32 px-4 py-4 w-2/5 rounded-lg overflow-y-auto h-nice"
+        class="absolute bg-white mt-32 p-4 w-2/5 rounded-lg z-50"
       >
         <div class="flex justify-end">
           <div
             @click="closeModal"
-            class="cursor-pointer text-red-500 rounded-full text-3xl text-center flex items-center justify-center h-8 w-8"
+            class="cursor-pointer font-normal text-gray-700 rounded-full text-3xl text-center flex items-center justify-center h-8 w-8"
           >
             &#10006;
           </div>
         </div>
 
-        <div class="grid grid-cols-1 text-center text-xl">
-          <div>Vessel Name: {{ this.vessel.fullVslM }}</div>
-          <div>Voyage Name: {{ this.vessel.inVoyN }}</div>
-          <div>Average Speed: {{ this.vessel.avgSpeed }}</div>
-          <div>Max Speed: {{ this.vessel.maxSpeed }}</div>
+        <div class="grid grid-cols-2 text-left text-xl">
+          <div>
+            <div class="text-sm text-gray-700">Vessel Name: </div>
+            {{ this.vessel.fullVslM }}
+          </div>
+          <div>
+            <div class="text-sm text-gray-700">Voyage Name: </div>
+            {{ this.vessel.inVoyN }}
+          </div>
+          <div>
+            <div class="text-sm text-gray-700">Outward Voyage Name: </div>
+            {{ this.vessel.outVoyN}}
+          </div>
+          <div>
+            <div class="text-sm text-gray-700">Berthing DateTime: </div>
+            {{ this.vessel.bthgDt}}
+          </div>
+          <div>
+            <div class="text-sm text-gray-700">UnBerthing DateTime: </div>
+            {{ this.vessel.unbthgDt}}
+          </div>
+          <div>
+            <div class="text-sm text-gray-700">Berth no. </div>
+            {{ this.vessel.berthNo}}
+          </div>
+          <div>
+            <div class="text-sm text-gray-700">Status: </div>
+            {{ this.vessel.status}}
+          </div>
+          <div>
+            <div class="text-sm text-gray-700">Average Speed: </div>
+            {{ this.vessel.avgSpeed }}
+            </div>
+          <div>
+            <div class="text-sm text-gray-700">Max Speed: </div>
+            {{ this.vessel.maxSpeed }}
+            </div>
           <div></div>
         </div>
 
@@ -33,7 +65,7 @@
               type="submit"
               class="bg-blue-300 p-2 rounded-lg"
               @click="addSubscribed"
-              v-if="isSubscribed"
+              v-if="!isSubscribed"
             >
               Subscribe
             </button>
@@ -54,7 +86,7 @@
 
 <style>
 .h-nice {
-  height: 30rem;
+  height: 35rem;
 }
 </style>
 
@@ -103,7 +135,7 @@ export default {
       isSubscribed: false,
     };
   },
-  async beforeCreate() {
+  async beforeMount() {
     this.vessel = await this.$http.$post(
       "http://localhost:8080/vessel/getvessel",
       {
@@ -140,9 +172,10 @@ export default {
         order: "asc",
       }
     );
-
-    for(let i = 0; i<this.subscribedVessel; i++){
-      if(this.$store.state.vessel.abbrvslm === this.subscribedVessel[i].inVoyN){
+    
+    for(let i = 0; i<this.subscribedVessel.length; i++){
+      if(this.$store.state.vessel.voyageName === this.subscribedVessel[i].inVoyN){
+        console.log('HEIJE');
         this.isSubscribed = true
       }
     }

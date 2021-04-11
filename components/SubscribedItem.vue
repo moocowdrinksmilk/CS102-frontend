@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <div @click="openDetailsModal" class="w-48 bg-gray-400 h-56 mr-8 rounded-3xl px-4 py-4 cursor-pointer">
+        <div @click="openDetailsModal" class="w-nice bg-indigo-100 mr-8 rounded-3xl px-4 py-4 cursor-pointer">
             <div class="text-md font-semibold flex justify-between items-center">
                 <div>
                     {{vessel_name}}
@@ -19,18 +19,17 @@
                     </div>
                 </div>
             </div>
-            <br>
-            <div class="mb-1">
-                <span class="text-sm">inVoyn: </span> {{voyage_number}}
+            <div class="mb-1 mt-2">
+                <div class="text-sm text-gray-600">inVoyn: </div> {{voyage_number}}
             </div>
             <div>
-                <span class="text-sm">Berth Date: </span>{{
+                <div class="text-sm text-gray-600">Berth Date: </div>{{
                     berth_date.split("T")[0]
                     
                 }}
             </div>
             <div>
-                <span class="text-sm">Berth Time: </span>{{
+                <div class="text-sm text-gray-600">Berth Time: </div>{{
                     berth_date.split("T")[1].split(":")[0] +
                     ":" +
                     berth_date.split("T")[1].split(":")[1] +
@@ -38,11 +37,18 @@
                 }}
             </div>
             <div>
-                <span class="text-sm">Berth No: </span>{{berth_no}}
+                <div class="text-sm text-gray-600">Berth No: </div>{{berth_no == 'null' ? '-' : berth_no}}
             </div>
         </div>
     </div>
 </template>
+
+<style>
+    .w-nice{
+        width: 16rem;
+        height: 16rem;
+    }
+</style>
 
 <script>
 export default {
