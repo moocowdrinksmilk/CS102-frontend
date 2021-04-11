@@ -24,10 +24,9 @@
       </button>
     </div>
     <nav :class="{'block': open, 'hidden': !open}" class="flex-grow md:block px-4 pb-4 md:pb-0 md:overflow-y-auto  bg-indigo-100  top-0 w-full bottom-0">
-      <a class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-gray-400 rounded-lg dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/home">Overview</a>
+      <a class="block px-4 py-2 mt-2 text-sm font-semibold hover:bg-gray-400 text-gray-900 rounded-lg hover:text-gray-900 focus:text-gray-900 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/home">Overview</a>
       <nuxt-link class="block px-4 py-2 mt-2 text-sm font-semibold text-black bg-transparent rounded-lg hover:text-gray-900 focus:text-gray-900 hover:bg-gray-400 focus:bg-gray-200 focus:outline-none focus:shadow-outline" to="vessels">Vessels</nuxt-link>
       <nuxt-link class="block px-4 py-2 mt-2 text-sm font-semibold text-black bg-transparent rounded-lg hover:text-gray-900 focus:text-gray-900 hover:bg-gray-400 focus:bg-gray-200 focus:outline-none focus:shadow-outline" to="/alerts">Alerts</nuxt-link>
-      <a class="block px-4 py-2 mt-2 text-sm font-semibold text-black bg-transparent rounded-lg  hover:text-gray-900 focus:text-gray-900 hover:bg-gray-400 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="">Contacts</a>
       <br>
       <hr>
         <a class="block px-4 py-2 mt-2 text-sm font-semibold text-black bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-400 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/settings">Settings</a>

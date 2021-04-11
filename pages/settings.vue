@@ -1,13 +1,12 @@
 <template>
-  <div class="flex flex-col md:flex-row md:min-h-screen w-full bg-gray-200">
+  <div class="flex flex-col md:flex-row md:min-h-screen w-full">
     <SideBar />
     <div class="w-full ml-56">
       <div class="text-3xl font-bold py-6 pl-12 border-b-2 border-gray-400">
         Settings
       </div>
       <div class="">
-        
-        <div class="">
+        <div class="px-12">
           <div class="flex justify-between px-6 h-16 items-center">
             <div>Change in Berthing Date</div>
             <Toggle :isChecked="settings.btrDtAlert" :setting="'btrdt'" @changeSettings="editSettings('btrDtAlert')"/>
@@ -32,17 +31,27 @@
             <div>Change in Max Speed</div>
             <Toggle :isChecked="this.settings.maxSpeedAlert" @changeSettings="editSettings('maxSpeedAlert')"/>
           </div>
-        </div>
-        <div class="flex justify-between px-6 h-16 items-center">
+          <div class="flex justify-between px-6 h-16 items-center">
             <div>Opt in for email</div>
             <Toggle :isChecked="this.settings.emailOptIn" @changeSettings="editSettings('emailOptIn')"/>
           </div>
+        </div>
+
+        
+        
         </div>
         <form action="">
           <div class="flex justify-end px-8 mt-6">
             <button class="bg-gray-400 p-4 rounded-2xl" @click="saveChanges" type="submit">Save Changes</button>
           </div>
         </form>
+
+        <div class="border-b-2 border-gray-400 mt-4"></div>
+        <div class="px-12">
+          <div class="text-3xl">
+            User Account
+          </div>
+        </div>
       </div>
     </div>
 </template>
