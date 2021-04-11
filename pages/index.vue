@@ -30,6 +30,7 @@
                                 <input v-model="user_name" class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" type="" placeholder="Username">
                             </div>
                             <div class="mt-8">
+                                
                                 <div class="flex justify-between items-center">
                                     <div class="text-sm font-bold text-gray-700 tracking-wide">
                                         Password

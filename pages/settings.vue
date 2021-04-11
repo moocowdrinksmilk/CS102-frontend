@@ -89,10 +89,11 @@
               <span class="text-lg">{{ this.$store.state.auth.email }}</span>
             </div>
 
-            <div class="mb-8">
+            <div class="text-2xl text-gray-700 mb-8">
+              Reset Password
               <div class="flex">
                 <div>
-                  <div class="text-2xl text-gray-700">Old Password:</div>
+                  <div class="text-lg text-gray-700">Old Password:</div>
                   <div class="border-gray-400 border-2  mr-4">
                     <input
                     v-model="oldPassword"
@@ -104,7 +105,7 @@
                   </div>
                 </div>
                 <div class="mb-8">
-                  <div class="text-2xl text-gray-700">New Password:</div>
+                  <div class="text-lg text-gray-700">New Password:</div>
                   <div class="border-gray-400 border-2">
                     <input
                     v-model="newPassword"
