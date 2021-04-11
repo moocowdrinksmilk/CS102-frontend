@@ -1,10 +1,10 @@
 <template>
-  <div class="">
+  <div class="fixed z-50">
     <div
-      class="absolute h-screen w-screen opacity-25 bg-gray-500 z-40 flex justify-center"
+      class="absolute h-screen w-screen opacity-25 bg-gray-500 flex justify-center"
     ></div>
 
-    <div class="absolute h-1/2 w-screen z-40 flex justify-center">
+    <div class="absolute h-1/2 w-screen z-50 flex justify-center">
       <div
         class="absolute bg-white mt-32 p-4 w-2/5 rounded-lg z-50"
       >
@@ -32,11 +32,11 @@
           </div>
           <div>
             <div class="text-sm text-gray-700">Berthing DateTime: </div>
-            {{ this.vessel.bthgDt}}
+            {{ this.vessel.berthTime}}
           </div>
           <div>
             <div class="text-sm text-gray-700">UnBerthing DateTime: </div>
-            {{ this.vessel.unbthgDt}}
+            {{ this.vessel.unBerthTime}}
           </div>
           <div>
             <div class="text-sm text-gray-700">Berth no. </div>
@@ -133,6 +133,8 @@ export default {
       speedNum: [],
       subscribedVessel: [],
       isSubscribed: false,
+      newBerthTime : "",
+      newUnBerthTime : ""
     };
   },
   async beforeMount() {
@@ -172,6 +174,7 @@ export default {
         order: "asc",
       }
     );
+    
     
     for(let i = 0; i<this.subscribedVessel.length; i++){
       if(this.$store.state.vessel.voyageName === this.subscribedVessel[i].inVoyN){
